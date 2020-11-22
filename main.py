@@ -5,6 +5,7 @@
 # Python 3.8
 
 from utils import *
+from letras import *
 from pygame.locals import *
 import numpy as np
 
@@ -30,6 +31,10 @@ def explocion(xc, yc, datos):
 		DDA(-450,yc,450,yc, 255/255, 100/255, 0/255, 40)
 
 	set_pixel( xc,yc,255/255, 0/255, 0/255, 4)
+
+	sonidoBoom = pygame.mixer.Sound("Sonidos/boom2.wav")
+	sonidoBoom.play()
+
 	glFlush()
 	pygame.time.wait(100)
 	R=False
@@ -56,8 +61,10 @@ def explocion(xc, yc, datos):
 		else:
 			if(V):
 				print("win red")
-			else:
+				datos[4][0]+=1
+			if(R):
 				print("win green")
+				datos[4][1]+=1
 		pygame.time.wait(2000)
 		return True
 		
@@ -118,19 +125,17 @@ def Refresh(datos):
 	personajeVerde(datos[1][0],datos[1][1])
 	bomba(datos[2][0],datos[2][1])
 	bomba(datos[3][0],datos[3][1])
+	puntaje(datos[4][0],-550,200)
+	puntaje(datos[4][1], 550,200)
 	glFlush()
 
-def main():
-
-	pygame.init()
-	pygame.display.set_caption('C.G. I')
-	display_openGL(width, height, scale)
-
+def IniciarJuego():
 	datos = [
 		[-450, 250],#personaje rojo
 		[ 450,-250],#personade verde
 		[1000,1000],#bomba rojo
 		[1000,1000],#bomba verde
+		[0	 ,	 0],#puntos
 	]
 
 	mapa()
@@ -138,8 +143,18 @@ def main():
 	personajeVerde(550,250)
 	personajeRojo(datos[0][0],datos[0][1])
 	personajeVerde(datos[1][0],datos[1][1])
+	pygame.mixer.music.load('Sonidos/musica1.mp3')
+	pygame.mixer.music.play(1000000)
+	print("iniciado...")
+	return datos
 
-	print("Finish...")
+def main():
+
+	pygame.init()
+	pygame.display.set_caption('C.G. I')
+	display_openGL(width, height, scale)
+
+	datos = IniciarJuego()
 	glFlush()
 	pygame.display.flip()
 
@@ -203,6 +218,7 @@ def main():
 							[ 450,-250],#personade verde
 							[1000,1000],#bomba rojo
 							[1000,1000],#bomba verde
+							[datos[4][0],datos[4][1]],#puntaje
 						]
 				elif event.key == pygame.K_f :
 					print("K_f")
@@ -211,7 +227,6 @@ def main():
 					datos[2][0]=datos[0][0]
 					datos[2][1]=datos[0][1]
 					if(muerto):
-						print(muerto)
 						set_pixel( datos[0][0], datos[0][1], 0/255, 0/255, 0/255, 50)
 						set_pixel( datos[1][0], datos[1][1], 0/255, 0/255, 0/255, 50)
 						datos = [
@@ -219,6 +234,7 @@ def main():
 							[ 450,-250],#personade verde
 							[1000,1000],#bomba rojo
 							[1000,1000],#bomba verde
+							[datos[4][0],datos[4][1]],#puntaje
 						]
 				Refresh(datos)
 
