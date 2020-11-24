@@ -6,8 +6,11 @@
 
 from utils import *
 from letras import *
+from start import *
 from pygame.locals import *
-import numpy as np
+import numpy as fsa
+import threading
+
 
 scale = 1 
 """ no cambiar la escala de 1 """
@@ -84,7 +87,7 @@ def mapa():
 	x=487.5
 	y=287.5
 
-	vertices = [(-x, -y), (-x, y), (x, y), (x, -y)]
+	vertices = [(-x, -y,1), (-x, y,1), (x, y,1), (x, -y,1)]
 	DrawPolygon(vertices, 175/255, 175/255, 175/255, 25)
 	x = -400
 	for k in range(0,9):
@@ -92,33 +95,6 @@ def mapa():
 		for l in range(0,5):
 			set_pixel(-400+(k*100),200-(l*100),175/255, 175/255, 175/255, 50)
 
-def personajeRojo(xc, yc):
-	#cabeza
-	set_pixel( xc,yc+20,255/255, 179/255, 133/255, 10)
-	DDA(xc-5, yc+24, xc+5, yc+24, 255/255, 0/255, 0/255, 2)
-	set_pixel( xc-3,yc+22, 0/255, 0/255, 0/255, 2)
-	set_pixel( xc+2,yc+22, 0/255, 0/255, 0/255, 2)
-	DDA(xc-2, yc+17, xc+1, yc+17, 0/255, 0/255, 0/255, 2)
-	#manos
-	DDA(xc-10, yc+12, xc-12, yc-3, 255/255, 179/255, 133/255, 5)
-	DDA(xc+10, yc+12, xc+12, yc-3, 255/255, 179/255, 133/255, 5)
-	#tronco
-	DDA(xc, yc+7, xc, yc-17, 255/255, 0/255, 0/255, 15)
-	DDA(xc, yc-5, xc, yc-25, 0/255, 0/255, 0/255, 1)
-
-def personajeVerde(xc, yc):
-	#cabeza
-	set_pixel( xc,yc+20,255/255, 179/255, 133/255, 10)
-	DDA(xc-5, yc+24, xc+5, yc+24, 0/255, 110/255, 10/255, 2)
-	set_pixel( xc-3,yc+22, 0/255, 0/255, 0/255, 2)
-	set_pixel( xc+2,yc+22, 0/255, 0/255, 0/255, 2)
-	DDA(xc-2, yc+17, xc+1, yc+17, 0/255, 0/255, 0/255, 2)
-	#manos
-	DDA(xc-10, yc+12, xc-12, yc-3, 255/255, 179/255, 133/255, 5)
-	DDA(xc+10, yc+12, xc+12, yc-3, 255/255, 179/255, 133/255, 5)
-	#tronco
-	DDA(xc, yc+7, xc, yc-17, 0/255, 110/255, 10/255, 15)
-	DDA(xc, yc-5, xc, yc-25, 0/255, 0/255, 0/255, 1)
 
 def Refresh(datos):
 	personajeRojo(datos[0][0],datos[0][1])
@@ -144,14 +120,14 @@ def IniciarJuego():
 	personajeRojo(datos[0][0],datos[0][1])
 	personajeVerde(datos[1][0],datos[1][1])
 	pygame.mixer.music.load('Sonidos/musica1.mp3')
-	pygame.mixer.music.play(1000000)
+	pygame.mixer.music.play(100)
 	print("iniciado...")
 	return datos
 
-def main():
-
+def Juego():
+	
 	pygame.init()
-	pygame.display.set_caption('C.G. I')
+	pygame.display.set_caption('BomberTony')
 	display_openGL(width, height, scale)
 
 	datos = IniciarJuego()
@@ -159,17 +135,19 @@ def main():
 	pygame.display.flip()
 
 	while True:
+		if (datos[4][0] == 10):
+			return "R"
+		if (datos[4][1] == 10):
+			return "G"
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				return
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT :
-					print("K_LEFT")
 					sx = -50
 					sy = 0
 					datos[1][0], datos[1][1] = MoveDefender(datos[1][0], datos[1][1], sx, sy)
 				elif event.key == pygame.K_RIGHT:
-					print("K_RIGHT")
 					sx = 50
 					sy = 0
 					datos[1][0], datos[1][1] = MoveDefender(datos[1][0], datos[1][1], sx, sy)
@@ -179,32 +157,26 @@ def main():
 					sy = 50
 					datos[1][0], datos[1][1] = MoveDefender(datos[1][0], datos[1][1], sx, sy)
 				elif event.key == pygame.K_DOWN :
-					print("K_DOWN")
 					sx = 0
 					sy = -50
 					datos[1][0], datos[1][1] = MoveDefender(datos[1][0], datos[1][1], sx, sy)
 				elif event.key == pygame.K_a :
-					print("K_a")
 					sx = -50
 					sy = 0
 					datos[0][0], datos[0][1] = MoveDefender(datos[0][0], datos[0][1], sx, sy)
 				elif event.key == pygame.K_d:
-					print("K_d")
 					sx = 50
 					sy = 0
 					datos[0][0], datos[0][1] = MoveDefender(datos[0][0], datos[0][1], sx, sy)
 				elif event.key == pygame.K_w :
-					print("K_w")
 					sx = 0
 					sy = 50
 					datos[0][0], datos[0][1] = MoveDefender(datos[0][0], datos[0][1], sx, sy)
 				elif event.key == pygame.K_s :
-					print("K_s")
 					sx = 0
 					sy = -50
 					datos[0][0], datos[0][1] = MoveDefender(datos[0][0], datos[0][1], sx, sy)
 				elif event.key == pygame.K_KP_ENTER :
-					print("K_KP_ENTER")
 					muerto=explocion( datos[3][0], datos[3][1] , datos)
 					limpiar_explo( datos[3][0], datos[3][1] )
 					datos[3][0]=datos[1][0]
@@ -221,7 +193,6 @@ def main():
 							[datos[4][0],datos[4][1]],#puntaje
 						]
 				elif event.key == pygame.K_f :
-					print("K_f")
 					muerto = explocion( datos[2][0], datos[2][1], datos)
 					limpiar_explo( datos[2][0], datos[2][1] )
 					datos[2][0]=datos[0][0]
@@ -237,6 +208,32 @@ def main():
 							[datos[4][0],datos[4][1]],#puntaje
 						]
 				Refresh(datos)
+
+def hilo_start(name):
+	global A 
+	A = start()
+	pygame.quit()
+	sys.exit()
+	
+def hilo_game(name):
+	global A
+	if A==0:
+		ganador = Juego()
+	pygame.quit()
+	sys.exit()
+	
+
+def main():
+	global A 
+	A = 0
+	while(A==0):
+		hilo1=threading.Thread(target=hilo_start,args=("hilo start",))
+		hilo2=threading.Thread(target=hilo_game,args=("hilo juego",))
+		hilo1.start()
+		hilo1.join()
+		hilo2.start()
+		hilo2.join()
+
 
 if __name__ == '__main__':
 	main()

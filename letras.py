@@ -5,10 +5,6 @@ from OpenGL.GLU import *
 import pygame
 from pygame.locals import *
 
-import math
-import random as rdn
-import numpy as np
-
 def set_pixel(x, y, r, g, b, scale):
 	glColor3f(r, g, b)
 	glPointSize(scale)
@@ -229,3 +225,122 @@ def L_C(x,y):
             if R[i][j]==0: 
                 set_pixel(x+j,y-i, 0, 0, 0, 1)
                 
+
+def L_G(x,y,size):
+    G=[[0,1,1,1,0,0],
+       [1,0,0,0,0,0],
+       [1,0,1,1,0,0],
+       [1,0,0,1,0,0],
+       [1,0,0,1,0,0],
+       [0,1,1,0,0,0]]
+    for i in range(len(G)):
+        for j in range(len(G)):
+            if G[i][j]==1: 
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+        
+def L_R(x,y,size):
+    R=[[0,1,1,1,0,0],
+       [1,0,0,0,1,0],
+       [1,1,1,1,0,0],
+       [1,0,1,0,0,0],
+       [1,0,0,1,0,0],
+       [0,0,0,0,1,0]]
+    for i in range(len(R)):
+        for j in range(len(R)):
+            if R[i][j]==1: 
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+def L_A(x,y,size):
+    R=[[0,1,1,0,0,0],
+       [1,0,0,1,0,0],
+       [1,0,0,1,0,0],
+       [1,1,1,1,0,0],
+       [1,0,0,1,0,0],
+       [0,0,0,1,0,0]]
+    for i in range(len(R)):
+        for j in range(len(R)):
+            if R[i][j]==1: 
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+def L_M(x,y,size):
+    R=[[0,1,0,1,0,0],
+       [1,0,1,0,1,0],
+       [1,0,1,0,1,0],
+       [1,0,1,0,1,0],
+       [1,0,0,0,1,0],
+       [0,0,0,0,1,0]]
+    for i in range(len(R)):
+        for j in range(len(R)):
+            if R[i][j]==1: 
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+def L_E(x,y,size):
+    R=[[0,1,1,1,0,0],
+       [1,0,0,0,0,0],
+       [1,1,1,1,0,0],
+       [1,0,0,0,0,0],
+       [1,1,1,1,0,0],
+       [0,0,0,0,0,0]]
+    for i in range(len(R)):
+        for j in range(len(R)):
+            if R[i][j]==1: 
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+def L_S(x,y,size):
+    R=[[0,1,1,1,0,0],
+       [1,0,0,0,0,0],
+       [0,1,1,0,0,0],
+       [0,0,0,1,0,0],
+       [1,1,1,0,0,0],
+       [0,0,0,0,0,0]]
+    for i in range(len(R)):
+        for j in range(len(R)):
+            if R[i][j]==1: 
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+def L_T(x,y,size):
+    R=[[1,1,1,1,1,0],
+       [0,0,1,0,0,0],
+       [0,0,1,0,0,0],
+       [0,0,1,0,0,0],
+       [0,0,1,0,0,0],
+       [0,0,0,0,0,0]]
+    for i in range(len(R)):
+        for j in range(len(R)):
+            if R[i][j]==1: 
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+def L_X(x,y,size):
+    R=[[1,1,0,0,1,1],
+       [0,1,0,0,1,0],
+       [0,0,1,1,0,0],
+       [0,0,1,1,0,0],
+       [1,1,0,0,1,1],
+       [0,0,0,0,0,0]]
+    for i in range(len(R)):
+        for j in range(len(R)):
+            if R[i][j]==1: 
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+def L_I(x,y,size):
+    R=[[0,1,1,1,1,0],
+       [1,0,1,0,0,0],
+       [0,0,1,0,0,0],
+       [0,0,1,0,0,0],
+       [0,1,1,1,1,0],
+       [0,0,0,0,0,0]]
+    for i in range(len(R)):
+        for j in range(len(R)):
+            if R[i][j]==1: 
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+
+def puntero(x,y):
+    P=[[0,0,0,0,0,0,0,0,0],
+       [0,0,0,2,2,0,0,0,0],
+       [0,0,2,0,2,0,2,0,0],
+       [0,0,2,2,2,0,2,0,0],
+       [0,0,2,0,0,0,2,0,0],
+       [0,0,2,0,0,0,0,0,0],
+       [0,3,0,0,0,0,0,3,0],
+       [0,0,3,3,3,3,3,0,0]]
+    size=5
+    for i in range(len(P)):
+        for j in range(len(P)):
+            if P[i][j]==2:
+                set_pixel(x+j,y-i, 85, 85, 85, size)
+            if P[i][j]==3:
+                set_pixel(x+j,y-i, 255, 233, 0, size)
+

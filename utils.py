@@ -7,13 +7,13 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-
-import pygame
 from pygame.locals import *
 
+import pygame
 import math
-import random as rdn
 import numpy as np
+
+
 
 ### Algorithm ###
 
@@ -74,10 +74,19 @@ def DrawPolygon(vertices, r, g, b, size):
 	# vertices = [(x1, x2), (x2, y2), ..., (xn, yn)]
 	vertices.append(vertices[0])
 	for k in range(len(vertices) - 1):
-		x0, y0 = vertices[k]
-		x1, y1 = vertices[k + 1]
+		x0, y0, z0 = vertices[k]
+		x1, y1, z1 = vertices[k + 1]
 		DDA(x0, y0, x1, y1, r, g, b, size)
 
+def traslate(vertices,tx,ty):
+    T=[[1,0,tx],
+	   [0,1,ty],
+	   [0,0,1 ]]
+    result=[]
+    for i in range (len(vertices)):
+        point=np.dot(T,vertices[i])
+        result.append(point)
+    return result
 
 ### Draw
 def display_openGL(width, height, scale):
@@ -107,3 +116,31 @@ def MoveDefender(x, y, sx, sy):
 		if( (abs(x)%100 == 50) and ( y > -250) ):
 			y = y + sy
 	return x, y
+
+def personajeRojo(xc, yc):
+	#cabeza
+	set_pixel( xc,yc+20,255/255, 179/255, 133/255, 10)
+	DDA(xc-5, yc+24, xc+5, yc+24, 255/255, 0/255, 0/255, 2)
+	set_pixel( xc-3,yc+22, 0/255, 0/255, 0/255, 2)
+	set_pixel( xc+2,yc+22, 0/255, 0/255, 0/255, 2)
+	DDA(xc-2, yc+17, xc+1, yc+17, 0/255, 0/255, 0/255, 2)
+	#manos
+	DDA(xc-10, yc+12, xc-12, yc-3, 255/255, 179/255, 133/255, 5)
+	DDA(xc+10, yc+12, xc+12, yc-3, 255/255, 179/255, 133/255, 5)
+	#tronco
+	DDA(xc, yc+7, xc, yc-17, 255/255, 0/255, 0/255, 15)
+	DDA(xc, yc-5, xc, yc-25, 0/255, 0/255, 0/255, 1)
+
+def personajeVerde(xc, yc):
+	#cabeza
+	set_pixel( xc,yc+20,255/255, 179/255, 133/255, 10)
+	DDA(xc-5, yc+24, xc+5, yc+24, 0/255, 110/255, 10/255, 2)
+	set_pixel( xc-3,yc+22, 0/255, 0/255, 0/255, 2)
+	set_pixel( xc+2,yc+22, 0/255, 0/255, 0/255, 2)
+	DDA(xc-2, yc+17, xc+1, yc+17, 0/255, 0/255, 0/255, 2)
+	#manos
+	DDA(xc-10, yc+12, xc-12, yc-3, 255/255, 179/255, 133/255, 5)
+	DDA(xc+10, yc+12, xc+12, yc-3, 255/255, 179/255, 133/255, 5)
+	#tronco
+	DDA(xc, yc+7, xc, yc-17, 0/255, 110/255, 10/255, 15)
+	DDA(xc, yc-5, xc, yc-25, 0/255, 0/255, 0/255, 1)
